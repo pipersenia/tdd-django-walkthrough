@@ -1,4 +1,5 @@
 from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
 import unittest
 
 class NewVisitorTest(unittest.TestCase):
@@ -32,7 +33,15 @@ class NewVisitorTest(unittest.TestCase):
         # Send the input
         inputbox.send_keys(Keys.ENTER)
 
-        table = self.browser.find_element_by_tag_name('tr')
+        table = self.browser.find_element_by_id('id_list_table')
+        ''' 
+        Potentital gotcha: 
+        Watch out for the difference between the
+        Selenium find_element_by... and find_elements_by... functions. One
+        returns an element, and raises an exception if it can’t find it,
+        whereas the other returns a list, which may be empty.
+        '''
+        rows = self.browser.find_elements_by_tag_name('tr')
         self.assertTrue(
             any(row.text == '1: Buy peacock feathers' for row in rows)
         )
